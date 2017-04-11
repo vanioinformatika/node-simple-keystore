@@ -1,0 +1,59 @@
+{
+  "name": "@vanioinformatika/simple-keystore",
+  "version": "0.1.0",
+  "description": "Simple Node.js filesystem keystore",
+  "author": "Gyula Szalai <gyszalai@gmail.com>",
+  "license": "MIT",
+  "contributors": [
+    {
+      "name": "Gyula Szalai",
+      "email": "gyszalai@gmail.com"
+    }
+  ],
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "mocha \"lib/**/*.spec.js\"",
+    "preversion": "git push && npm test",
+    "postversion": "git push && git push --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vanioinformatika/node-simple-keystore.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vanioinformatika/node-simple-keystore/issues"
+  },
+  "keywords": [
+    "node",
+    "keystore",
+    "pki",
+    "jwk"
+  ],
+  "dependencies": {
+    "bluebird": "3.5.0",
+    "debug": "2.6.3",
+    "jsrsasign": "7.1.2",
+    "pem": "1.9.4"
+  },
+  "devDependencies": {
+    "chai": "3.5.0",
+    "chai-as-promised": "6.0.0",
+    "dirty-chai": "1.2.2",
+    "istanbul": "0.4.5",
+    "mocha": "3.2.0",
+    "mocha-junit-reporter": "1.13.0",
+    "standard": "9.0.2"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "standard": {
+    "global": [
+      "__basedir",
+      "describe",
+      "it",
+      "before",
+      "after"
+    ]
+  }
+}
