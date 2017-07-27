@@ -55,5 +55,6 @@
       "before",
       "after"
     ]
-  }
+  },
+  "types": "types/index.d.ts"
 }
