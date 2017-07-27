@@ -1,3 +1,5 @@
+import * as Promise from "bluebird"
+
 declare namespace SimpleKeystore {
     class KeystoreError extends Error {
         constructor(message: string);
