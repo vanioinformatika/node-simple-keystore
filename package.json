@@ -1,6 +1,6 @@
 {
   "name": "@vanioinformatika/simple-keystore",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Simple Node.js filesystem keystore",
   "author": "Gyula Szalai <gyszalai@gmail.com>",
   "license": "MIT",
