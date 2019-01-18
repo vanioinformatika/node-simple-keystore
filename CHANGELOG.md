@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.1.0 - 2019-01-18
+
+- Update dependencies
+- Minimum Node.js version updated from 6.x to 8.x
+
 ## 1.0.3 - 2018-01-10
 
 - Logging full key entries to the standard output removed as it may log private keys
