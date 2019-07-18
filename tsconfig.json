@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noUnusedLocals": true,
+        "sourceMap": true,
+        "declaration": false,
+        "strict": true,
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "target": "es2018",
+        "experimentalDecorators": true,
+        "esModuleInterop": true,
+        "lib": [
+            "es2018"
+        ],
+        "resolveJsonModule": true,
+        "noEmitOnError": true
+    },
+    "exclude": [
+        "dist",
+        "node_modules"
+    ]
+}
