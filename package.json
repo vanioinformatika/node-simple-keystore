@@ -12,7 +12,7 @@
   ],
   "main": "lib/index.js",
   "scripts": {
-    "test": "mocha --exit \"lib/**/*.spec.js\"",
+    "test": "mocha --exit --require ts-node/register \"lib/**/*.spec.js\"",
     "preversion": "git push && npm test",
     "postversion": "git push && git push --tags"
   },
