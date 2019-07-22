@@ -8,6 +8,9 @@
     {
       "name": "Gyula Szalai",
       "email": "gyszalai@gmail.com"
+    }, {
+      "name": "Kovács Vince",
+      "email": "vincekovacs@hotmail.com"
     }
   ],
   "main": "lib/index.js",
