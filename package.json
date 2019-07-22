@@ -18,7 +18,7 @@
   "scripts": {
     "build": "tsc",
     "test": "mocha --exit --require ts-node/register \"lib/**/*.spec.ts\"",
-    "preversion": "git push && npm test && npm build",
+    "preversion": "git push && npm test && npm run build",
     "postversion": "git push && git push --tags"
   },
   "repository": {
