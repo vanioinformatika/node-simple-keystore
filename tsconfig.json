@@ -1,11 +1,12 @@
 {
     "compilerOptions": {
+        "outDir": "dist",
         "noFallthroughCasesInSwitch": true,
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "noUnusedLocals": true,
         "sourceMap": true,
-        "declaration": false,
+        "declaration": true,
         "strict": true,
         "module": "commonjs",
         "moduleResolution": "node",

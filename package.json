@@ -13,10 +13,11 @@
       "email": "vincekovacs@hotmail.com"
     }
   ],
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "scripts": {
+    "build": "tsc",
     "test": "mocha --exit --require ts-node/register \"lib/**/*.spec.ts\"",
-    "preversion": "git push && npm test",
+    "preversion": "git push && npm test && npm build",
     "postversion": "git push && git push --tags"
   },
   "repository": {
@@ -57,5 +58,5 @@
   "engines": {
     "node": ">=8.0.0"
   },
-  "types": "types/index.d.ts"
+  "types": "dist/index.d.ts"
 }
