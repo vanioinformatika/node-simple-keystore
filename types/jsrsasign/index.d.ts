@@ -269,7 +269,7 @@ declare module 'jsrsasign' {
          *
          * @return returns RSAKey/KJUR.crypto.{ECDSA,DSA} object of public key
          */
-        static getPublicKeyFromCertHex(h: string)
+        static getPublicKeyFromCertHex(h: string): any
 
         /**
          * Get RSA/DSA/ECDSA public key object from PEM certificate string.
@@ -278,7 +278,7 @@ declare module 'jsrsasign' {
          *
          * @return returns RSAKey/KJUR.crypto.{ECDSA,DSA} object of public key
          */
-        static getPublicKeyFromCertPEM(sCertPEM: string)
+        static getPublicKeyFromCertPEM(sCertPEM: string): any
 
         /**
          * Get public key information from PEM certificate.
@@ -287,7 +287,7 @@ declare module 'jsrsasign' {
          *
          * @return hash of information for public key
          */
-        static getPublicKeyInfoPropOfCertPEM(sCertPEM: string)
+        static getPublicKeyInfoPropOfCertPEM(sCertPEM: string): any
     }
 
     function hextob64(s: string): string

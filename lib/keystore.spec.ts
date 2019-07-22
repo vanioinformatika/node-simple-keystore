@@ -24,14 +24,14 @@ describe('keystore', () => {
             privKey: 'privkey1',
             cert: 'cert1',
             keyAlg: 'RS256',
-            pubkeyJwk: {kid: '1', x5c: ''},
+            pubkeyJwk: {kid: '1', x5c: ''} as any,
         })
         newKeys.set('2', {
             timestamp: Math.floor(Date.now() / 1000) - 20000,
             privKey: 'privkey2',
             cert: 'cert2',
             keyAlg: 'RS256',
-            pubkeyJwk: {kid: '2', x5c: ''},
+            pubkeyJwk: {kid: '2', x5c: ''} as any,
         })
         return newKeys
     }

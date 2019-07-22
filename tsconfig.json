@@ -16,7 +16,11 @@
             "es2018"
         ],
         "resolveJsonModule": true,
-        "noEmitOnError": true
+        "noEmitOnError": true,
+        "typeRoots": [
+            "node_modules/@types",
+            "./types"
+        ]
     },
     "exclude": [
         "dist",
