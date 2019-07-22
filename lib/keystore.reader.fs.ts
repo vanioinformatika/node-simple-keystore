@@ -62,14 +62,14 @@ export class KeystoreReaderFs {
      * @return {Promise} A promise which is resolved when both the certificate and the
      *                   private key is loaded for the given key id
      */
-    public async readKeyAndCert(newKeys: Map<string, KeyAndCert>, keyId: string) {
+    public async readKeyAndCert(newKeys: Map<string, KeyAndCert>, keyId: string): Promise<void> {
         const privKeyPem = fs.readFileSync(path.join(this.baseDir, `${keyId}.privkey.pem`))
         const certPem = fs.readFileSync(path.join(this.baseDir, `${keyId}.cert.pem`))
 
         this.debug(`Key id ${keyId}, privkey and cert read`)
         const cert = new X509()
         cert.readCertPEM(certPem.toString())
-        const verifiedCert = this.verifyCertAsync(keyId, certPem.toString())
+        const verifiedCert = await this.verifyCertAsync(keyId, certPem.toString())
         const certStr = verifiedCert.toString()
         const publicKey = KEYUTIL.getKey(certStr)
         const pubkeyJwk = KEYUTIL.getJWKFromKey(publicKey)
