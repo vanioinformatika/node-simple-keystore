@@ -5,17 +5,20 @@ Simple filesystem keystore implementation
 # Usage
 
 ```javascript
+const {Keystore, KeystoreReaderFs} = require('@vanioinformatika/simple-keystore')
+
 // initializing keystore
-const debugNamePrefix = 'myproject' // name prefix used for the debug module
 const baseDir = '<directory containing key files>'
 const refreshIntervalMillis = 30 * 1000 // 30 secs
 const signingKeyPassphrases = { // an object containing passphrases for private keys
   'key_id_1': 'passphrase1',
   'key_id_2': 'passphrase2'
 }
-const keystore = require('@vanioinformatika/simple-keystore') (
-  debugNamePrefix, baseDir, refreshIntervalMillis, signingKeyPassphrases
-)
+const keystoreReader = new KeystoreReaderFs(baseDir)
+const keystore = new Keystore(signingKeyPassphrases, keystoreReader)
+
+// start reading keystore periodically 
+keystore.start(refreshIntervalMillis)
 
 ...
 
