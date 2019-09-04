@@ -1,81 +1,13 @@
 import Debug, {IDebugger} from 'debug'
 import {CertificateNotFoundError, PrivateKeyNotFoundError} from './errors'
-
-/**
- * Holds a cached private key and certificate data
- */
-export interface KeyAndCert {
-    /**
-     * Timestamp of loading
-     */
-    timestamp: number
-    /**
-     * Private key data in PEM format
-     */
-    privKey: string
-    /**
-     * Certificate data in PEM format
-     */
-    cert: string
-    /**
-     * JWT key algorithm (RS256, ES256, etc.)
-     */
-    keyAlg: string
-    pubkeyJwk: JWK
-}
-
-export interface JWK {
-    /**
-     * Key id
-     */
-    kid: string
-
-    /**
-     * X.509 certificate chain
-     */
-    x5c: string
-
-    kty: string
-
-    n: string
-
-    e: string
-
-    alg: string
-
-    use: string
-
-    crv: string
-}
-
-export interface PrivateKey {
-    /**
-     * JWT key algorithm (RS256, ES256, etc.)
-     */
-    alg: string
-    /**
-     * Certificate data in PEM format
-     */
-    key: string
-    /**
-     * Passphrase for the private key (if any)
-     */
-    passphrase?: string
-}
-
-export interface Certificate {
-    alg: string
-    cert: string
-}
+import {Certificate, JWK, KeyAndCert, KeystoreReader, PrivateKey} from './contracts'
 
 export class Keystore {
     protected debug: IDebugger
 
     protected signingKeyPassphrases: { [key: string]: string }
 
-    protected keystoreReader: (keys: Map<string, KeyAndCert>) => Map<string, KeyAndCert> | Promise<Map<string, KeyAndCert>>
-
-    protected refreshInterval: number
+    protected keystoreReader: KeystoreReader
 
     /** The current signing key ID */
     protected currentSigningKeyId: string | null = null
@@ -91,27 +23,26 @@ export class Keystore {
      * @param debugNamePrefix Name prefix used for the debug module
      * @param signingKeyPassphrases Stores passphrases for each signing keys. Key: key id, value: passphrase
      * @param keystoreReader Keystore reader callback (sync or async)
-     * @param refreshInterval Interval of the keystore refresh [millisec]
      */
     public constructor(
-        debugNamePrefix: string,
         signingKeyPassphrases: { [key: string]: string },
-        keystoreReader: (keys: Map<string, KeyAndCert>) => Map<string, KeyAndCert> | Promise<Map<string, KeyAndCert>>,
-        refreshInterval: number,
+        keystoreReader: KeystoreReader,
+        debugNamePrefix?: string,
     ) {
-        this.debug = Debug(`${debugNamePrefix}:keystore`)
+        this.debug = Debug(`${debugNamePrefix ? debugNamePrefix + ':' : ''}keystore`)
         this.signingKeyPassphrases = signingKeyPassphrases
         this.keystoreReader = keystoreReader
-        this.refreshInterval = refreshInterval
     }
 
     /**
      * Start reader task
+     *
+     * @param refreshInterval Interval of the keystore refresh [millisec]
      */
-    public async start(): Promise<void> {
+    public async start(refreshInterval: number): Promise<void> {
         // first call before starting timer
         await this.keystoreReaderTask()
-        this.interval = setInterval(this.keystoreReaderTask.bind(this), this.refreshInterval)
+        this.interval = setInterval(this.keystoreReaderTask.bind(this), refreshInterval)
     }
 
     /**
@@ -224,7 +155,7 @@ export class Keystore {
 
     protected async keystoreReaderTask(): Promise<void> {
         try {
-            const newKeys = await this.keystoreReader(this.keys)
+            const newKeys = await this.keystoreReader.readKeys(this.keys)
             this.debug('Keystore reloaded, keys: ', newKeys.keys())
             this.keys = newKeys
             this.currentSigningKeyId = this.selectCurrentSigningKeyId(this.keys)

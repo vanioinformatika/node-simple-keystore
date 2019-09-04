@@ -10,15 +10,15 @@ chai.use(dirtyChai)
 const message = 'Sample message'
 const keyId = 'keyid_1'
 
-function throwKeystoreError() {
+function throwKeystoreError(): void {
     throw new KeystoreError(message)
 }
 
-function throwPrivateKeyNotFoundError() {
+function throwPrivateKeyNotFoundError(): void {
     throw new PrivateKeyNotFoundError(keyId)
 }
 
-function throwCertificateNotFoundError() {
+function throwCertificateNotFoundError(): void {
     throw new CertificateNotFoundError(keyId)
 }
 

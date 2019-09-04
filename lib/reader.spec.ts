@@ -1,7 +1,7 @@
 import * as chai from 'chai'
 import {expect} from 'chai'
 import * as path from 'path'
-import {KeystoreReaderFs} from './keystore.reader.fs'
+import {KeystoreReaderFs} from './reader'
 import chaiAsPromised = require('chai-as-promised')
 import dirtyChai = require('dirty-chai')
 

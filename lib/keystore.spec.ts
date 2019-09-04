@@ -1,7 +1,8 @@
 import * as chai from 'chai'
 import {expect} from 'chai'
-import {KeyAndCert, Keystore} from './keystore'
+import {Keystore} from './keystore'
 import {CertificateNotFoundError, PrivateKeyNotFoundError} from './errors'
+import {KeyAndCert, KeystoreReader} from './contracts'
 import chaiAsPromised = require('chai-as-promised')
 import dirtyChai = require('dirty-chai')
 
@@ -17,23 +18,25 @@ describe('keystore', () => {
     const signingKeyId = '2'
 
     let newKeys: Map<string, KeyAndCert>
-    const keystoreReader = (keys: Map<string, KeyAndCert>) => {
-        newKeys = new Map(keys)
-        newKeys.set('1', {
-            timestamp: Math.floor(Date.now() / 1000) - 10000,
-            privKey: 'privkey1',
-            cert: 'cert1',
-            keyAlg: 'RS256',
-            pubkeyJwk: {kid: '1', x5c: ''} as any,
-        })
-        newKeys.set('2', {
-            timestamp: Math.floor(Date.now() / 1000) - 20000,
-            privKey: 'privkey2',
-            cert: 'cert2',
-            keyAlg: 'RS256',
-            pubkeyJwk: {kid: '2', x5c: ''} as any,
-        })
-        return newKeys
+    const keystoreReader: KeystoreReader = {
+        readKeys: (keys: Map<string, KeyAndCert>) => {
+            newKeys = new Map(keys)
+            newKeys.set('1', {
+                timestamp: Math.floor(Date.now() / 1000) - 10000,
+                privKey: 'privkey1',
+                cert: 'cert1',
+                keyAlg: 'RS256',
+                pubkeyJwk: {kid: '1', x5c: ''} as any,
+            })
+            newKeys.set('2', {
+                timestamp: Math.floor(Date.now() / 1000) - 20000,
+                privKey: 'privkey2',
+                cert: 'cert2',
+                keyAlg: 'RS256',
+                pubkeyJwk: {kid: '2', x5c: ''} as any,
+            })
+            return newKeys
+        },
     }
 
     let keystore: Keystore

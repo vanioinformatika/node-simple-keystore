@@ -1,11 +1,11 @@
 import Debug, {IDebugger} from 'debug'
-import {KeyAndCert} from './keystore'
 import * as fs from 'fs'
 import * as path from 'path'
 import * as pem from 'pem'
 import {hextob64, KEYUTIL, pemtohex, X509} from 'jsrsasign'
+import {KeyAndCert, KeystoreReader} from '../contracts'
 
-export class KeystoreReaderFs {
+export class KeystoreReaderFs implements KeystoreReader {
     protected debug: IDebugger
 
     protected baseDir: string
@@ -17,11 +17,11 @@ export class KeystoreReaderFs {
     /**
      * Creates a keystore reader function
      *
-     * @param {string} debugNamePrefix Name prefix used for the debug module
-     * @param {string} baseDir The keystore base directory
+     * @param  baseDir The keystore base directory
+     * @param  debugNamePrefix Name prefix used for the debug module
      */
-    public constructor(debugNamePrefix: string, baseDir: string) {
-        this.debug = Debug(debugNamePrefix + ':keystore.reader')
+    public constructor(baseDir: string, debugNamePrefix?: string) {
+        this.debug = Debug(`${debugNamePrefix ? debugNamePrefix + ':' : ''}keystore:reader:fs`)
         this.baseDir = baseDir
 
         const rootCACert = fs.readFileSync(path.join(baseDir, `rootCA.cert.pem`))
@@ -114,7 +114,7 @@ export class KeystoreReaderFs {
      * @param {Object} keys A map containing the currently loaded keys
      * @return {Promise.<Map.<KeyAndCert>, Error>} Promise to an object containing the already existing and loaded keys
      */
-    public async readKeys(keys: Map<string, KeyAndCert>) {
+    public async readKeys(keys: Map<string, KeyAndCert>): Promise<Map<string, KeyAndCert>> {
         const newKeys = new Map(keys)
         const files = fs.readdirSync(this.baseDir)
         await Promise.all(files.map(async (file) => {
