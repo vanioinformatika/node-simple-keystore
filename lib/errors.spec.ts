@@ -1,6 +1,11 @@
 import * as chai from 'chai'
 import {expect} from 'chai'
-import {CertificateNotFoundError, KeystoreError, PrivateKeyNotFoundError} from './errors'
+import {
+    CertificateNotFoundError,
+    KeystoreError,
+    PrivateKeyNotFoundError,
+    PrivateKeyPassphraseNotFoundError,
+} from './errors'
 import chaiAsPromised = require('chai-as-promised')
 import dirtyChai = require('dirty-chai')
 
@@ -20,6 +25,10 @@ function throwPrivateKeyNotFoundError(): void {
 
 function throwCertificateNotFoundError(): void {
     throw new CertificateNotFoundError(keyId)
+}
+
+function throwPrivateKeyPassphraseNotFoundError(): void {
+    throw new PrivateKeyPassphraseNotFoundError(keyId)
 }
 
 describe('errors', () => {
@@ -80,6 +89,30 @@ describe('errors', () => {
                     .to
                     .equal(`CertificateNotFoundError: certificate not found, key id: ${keyId}`)
                 expect(err.stack.split('\n')[1].indexOf('throwCertificateNotFoundError')).to.equal(7)
+            }
+        })
+    })
+
+    describe('PrivateKeyPassphraseNotFoundError', () => {
+        it('a new instance should have the appropriate properties', () => {
+            try {
+                throwPrivateKeyPassphraseNotFoundError()
+            } catch (err) {
+                expect(err.name).to.equal('PrivateKeyPassphraseNotFoundError')
+                expect(err instanceof PrivateKeyPassphraseNotFoundError).to.be.true()
+                expect(err instanceof KeystoreError).to.be.true()
+                expect(err instanceof Error).to.be.true()
+                expect(require('util').isError(err)).to.be.true()
+                expect(err.stack).to.exist()
+                expect(err.toString())
+                    .to
+                    .equal(`PrivateKeyPassphraseNotFoundError: private key passphrase not found, key id: ${keyId}`)
+                expect(err.keyId).to.equal(keyId)
+                expect(err.message).to.equal(`private key passphrase not found, key id: ${keyId}`)
+                expect(err.stack.split('\n')[0])
+                    .to
+                    .equal(`PrivateKeyPassphraseNotFoundError: private key passphrase not found, key id: ${keyId}`)
+                expect(err.stack.split('\n')[1].indexOf('throwPrivateKeyPassphraseNotFoundError')).to.equal(7)
             }
         })
     })

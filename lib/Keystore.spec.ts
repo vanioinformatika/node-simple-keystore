@@ -1,7 +1,7 @@
 import * as chai from 'chai'
 import {expect} from 'chai'
 import {Keystore} from './keystore'
-import {CertificateNotFoundError, PrivateKeyNotFoundError} from './errors'
+import {CertificateNotFoundError, PrivateKeyNotFoundError, PrivateKeyPassphraseNotFoundError} from './errors'
 import {KeyAndCert, KeystoreReader} from './contracts'
 import chaiAsPromised = require('chai-as-promised')
 import dirtyChai = require('dirty-chai')
@@ -10,12 +10,11 @@ chai.use(chaiAsPromised)
 chai.use(dirtyChai)
 
 describe('keystore', () => {
-    //
-    const signingKeyPassphrases: { [key: string]: string } = {
-        signingKeyId: 'test',
-    }
-
     const signingKeyId = '2'
+
+    const signingKeyPassphrases: { [key: string]: string } = {
+        [signingKeyId]: 'test',
+    }
 
     let newKeys: Map<string, KeyAndCert>
     const keystoreReader: KeystoreReader = {
@@ -100,8 +99,10 @@ describe('keystore', () => {
         it('should return the appropriate private key passphrase if a valid private key ID is passed', () => {
             expect(keystore.getPrivateKeyPassphrase(signingKeyId)).be.equal(signingKeyPassphrases[signingKeyId])
         })
-        it('should be rejected with CertificateNotFoundError if a nonexistent certificate ID is passed', () => {
-            expect(keystore.getPrivateKeyPassphrase('fake_privkey_id')).be.undefined()
+        it('should be rejected with PrivateKeyPassphraseNotFoundError if private key passphrase not found', () => {
+            expect(() => keystore.getPrivateKeyPassphrase('fake_privkey_id'))
+                .to
+                .throw(PrivateKeyPassphraseNotFoundError)
         })
     })
 

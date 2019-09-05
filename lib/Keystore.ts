@@ -1,5 +1,5 @@
 import Debug, {IDebugger} from 'debug'
-import {CertificateNotFoundError, PrivateKeyNotFoundError} from './errors'
+import {CertificateNotFoundError, PrivateKeyNotFoundError, PrivateKeyPassphraseNotFoundError} from './errors'
 import {Certificate, JWK, KeyAndCert, KeystoreReader, PrivateKey} from './contracts'
 
 export class Keystore {
@@ -95,10 +95,14 @@ export class Keystore {
      *
      * @param id The id of the private key
      *
-     * @return The passphrase for the private key (if any)
+     * @return The passphrase for the private key
      */
-    public getPrivateKeyPassphrase(id: string): string | undefined {
-        return this.signingKeyPassphrases[id]
+    public getPrivateKeyPassphrase(id: string): string {
+        if (this.signingKeyPassphrases.hasOwnProperty(id)) {
+            return this.signingKeyPassphrases[id]
+        }
+
+        throw new PrivateKeyPassphraseNotFoundError(id)
     }
 
     /**
