@@ -44,8 +44,8 @@ describe('keystore', () => {
     //
     before(async function () {
         this.timeout(3000)
-        keystore = new Keystore('keystore', signingKeyPassphrases, keystoreReader, 1000)
-        await keystore.start()
+        keystore = new Keystore(signingKeyPassphrases, keystoreReader)
+        await keystore.start(100)
     })
 
     after(function () {
