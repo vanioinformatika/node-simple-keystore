@@ -1,6 +1,6 @@
 import * as chai from 'chai'
 import {expect} from 'chai'
-import {Keystore} from './keystore'
+import {Keystore} from './Keystore'
 import {CertificateNotFoundError, PrivateKeyNotFoundError, PrivateKeyPassphraseNotFoundError} from './errors'
 import {KeyAndCert, KeystoreReader} from './contracts'
 import chaiAsPromised = require('chai-as-promised')
