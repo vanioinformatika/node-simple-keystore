@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/vanioinformatika/node-simple-keystore.svg?branch=master)](https://travis-ci.org/vanioinformatika/node-simple-keystore)
+
 # Simple filesystem based keystore for Node.js
 
 Simple filesystem keystore implementation
