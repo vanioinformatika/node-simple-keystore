@@ -30,3 +30,13 @@ router.route('/certs').get((req, res) => {
   res.status(HttpStatus.OK).json({keys: certificateList})
 })
 ```
+
+The keys directory has to contain the following files:
+```
+rootCA.cert.pem
+{keyId}.privkey.pem
+{keyId}.cert.pem
+```
+The `rootCA.cert.pem` contains the certificate of the CA that issued the certificates.
+All other files that end with `.privkey.pem` and `.cert.pem` are the private keys and certificates for a given key id.
+
