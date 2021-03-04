@@ -16,24 +16,28 @@ describe('keystore', () => {
         [signingKeyId]: 'test',
     }
 
+    const signingKey1 = {
+        timestamp: Math.floor(Date.now() / 1000) - 10000,
+        privKey: 'privkey1',
+        cert: 'cert1',
+        keyAlg: 'RS256',
+        pubkeyJwk: {kid: '1', x5c: ''} as any,
+    }
+
+    const signingKey2 = {
+        timestamp: Math.floor(Date.now() / 1000) - 20000,
+        privKey: 'privkey2',
+        cert: 'cert2',
+        keyAlg: 'RS256',
+        pubkeyJwk: {kid: '2', x5c: ''} as any,
+    }
+
     let newKeys: Map<string, KeyAndCert>
     const keystoreReader: KeystoreReader = {
         readKeys: (keys: Map<string, KeyAndCert>) => {
             newKeys = new Map(keys)
-            newKeys.set('1', {
-                timestamp: Math.floor(Date.now() / 1000) - 10000,
-                privKey: 'privkey1',
-                cert: 'cert1',
-                keyAlg: 'RS256',
-                pubkeyJwk: {kid: '1', x5c: ''} as any,
-            })
-            newKeys.set('2', {
-                timestamp: Math.floor(Date.now() / 1000) - 20000,
-                privKey: 'privkey2',
-                cert: 'cert2',
-                keyAlg: 'RS256',
-                pubkeyJwk: {kid: '2', x5c: ''} as any,
-            })
+            newKeys.set('1', signingKey1)
+            newKeys.set('2', signingKey2)
             return newKeys
         },
     }
@@ -59,12 +63,17 @@ describe('keystore', () => {
 
     describe('getPrivateKey', () => {
         it('should return the private key if a valid private key ID is passed', async () => {
-            await keystore.getPrivateKey(signingKeyId)
+            const privKey = await keystore.getPrivateKey(signingKeyId)
+            expect(privKey.alg).to.equal(signingKey2.keyAlg)
+            expect(privKey.key).to.equal(signingKey2.privKey)
+            expect(privKey.passphrase).to.equal('test')
         })
-        it('should return the private key if a valid private key ID is passed and it has been already cached',
-            async () => {
-                await keystore.getPrivateKey(signingKeyId)
-            })
+        it('should return the private key if a valid private key ID is passed and it has been already cached', async () => {
+            const privKey = await keystore.getPrivateKey(signingKeyId)
+            expect(privKey.alg).to.equal(signingKey2.keyAlg)
+            expect(privKey.key).to.equal(signingKey2.privKey)
+            expect(privKey.passphrase).to.equal('test')
+        })
         it('should be rejected with PrivateKeyNotFoundError if a nonexistent private key ID is passed', async () => {
             await expect(keystore.getPrivateKey('fake_privkey_id')).be.rejectedWith(PrivateKeyNotFoundError)
         })
@@ -72,12 +81,15 @@ describe('keystore', () => {
 
     describe('getCertificate', () => {
         it('should return the certificate if a valid certificate ID is passed', async () => {
-            await keystore.getCertificate(signingKeyId)
+            const cert = await keystore.getCertificate(signingKeyId)
+            expect(cert.alg).to.equal(signingKey2.keyAlg)
+            expect(cert.cert).to.equal(signingKey2.cert)
         })
-        it('should return the certificate if a valid certificate ID is passed and it has been already cached',
-            async () => {
-                await keystore.getCertificate(signingKeyId)
-            })
+        it('should return the certificate if a valid certificate ID is passed and it has been already cached', async () => {
+            const cert = await keystore.getCertificate(signingKeyId)
+            expect(cert.alg).to.equal(signingKey2.keyAlg)
+            expect(cert.cert).to.equal(signingKey2.cert)
+        })
         it('should be rejected with CertificateNotFoundError if a nonexistent certificate ID is passed', async () => {
             expect(keystore.getCertificate('fake_privkey_id')).be.rejectedWith(CertificateNotFoundError)
         })
