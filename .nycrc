@@ -1,0 +1,16 @@
+{
+  "include": [
+    "lib/*.ts",
+    "lib/**/*.ts"
+  ],
+  "exclude": [
+    "types"
+  ],
+  "extension": [
+    ".ts"
+  ],
+  "require": [
+    "ts-node/register"
+  ],
+  "all": true
+}
