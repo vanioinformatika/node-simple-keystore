@@ -3,10 +3,23 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.2.0 - 2021-03-4
+## 2.1.0 - 2021-03-04
 
 - Update dependencies
 - Minimum Node.js version updated from 8.x to 10.x
+- some refactorings
+
+## 2.0.2 - 2019-07-22
+
+- fix preversion script
+
+## 2.0.1 - 2019-07-22
+
+- update contributor list
+- add missing npm script
+## 2.0.0 - 2019-07-22
+
+- Rewrite in typescript
 ## 1.1.0 - 2019-01-18
 
 - Update dependencies
