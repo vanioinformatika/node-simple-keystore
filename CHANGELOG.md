@@ -3,9 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.1.1 - 2021-03-4
+## 1.2.0 - 2021-03-4
 
 - Update dependencies
+- Minimum Node.js version updated from 8.x to 10.x
 ## 1.1.0 - 2019-01-18
 
 - Update dependencies
