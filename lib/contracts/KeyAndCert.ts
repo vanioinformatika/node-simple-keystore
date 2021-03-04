@@ -1,8 +1,8 @@
-import {JWK} from '../Keystore'
-
 /**
  * Holds a cached private key and certificate data
  */
+import {JWK} from "./JWK"
+
 export interface KeyAndCert {
     /**
      * Timestamp of loading
